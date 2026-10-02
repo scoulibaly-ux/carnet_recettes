@@ -21,7 +21,7 @@ export function databaseMessage(reason: DatabaseProblem) {
   if (reason === "missing-table") {
     return "Les tables ne sont pas encore créées. Exécutez db/schema.sql dans Neon.";
   }
-  return "Les recettes sont momentanément indisponibles.";
+    return "Les dossiers sont momentanément indisponibles.";
 }
 
 export async function getSql(options?: { duringRender?: boolean }) {

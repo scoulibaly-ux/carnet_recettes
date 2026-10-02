@@ -40,3 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# dossiers locaux de développement (peuvent contenir des numéros)
+/data

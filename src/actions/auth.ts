@@ -29,7 +29,7 @@ export async function loginAction(
 
   const cookieStore = await cookies();
   cookieStore.set(SESSION_COOKIE, createSessionValue(secret), sessionCookieOptions());
-  redirect("/ajouter");
+  redirect("/");
 }
 
 export async function logoutAction() {

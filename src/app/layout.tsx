@@ -18,10 +18,10 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: {
-    default: "Mon carnet de recettes",
-    template: "%s · Mon carnet de recettes",
+    default: "Recouvrement",
+    template: "%s · Recouvrement",
   },
-  description: "Un carnet pour garder vos recettes et leurs photos.",
+  description: "Dossiers de recouvrement et appels sortants planifiés.",
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
@@ -38,7 +38,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <footer className="border-t px-4 py-6 text-center text-sm text-muted-foreground">
-          Mon carnet de recettes
+          Recouvrement — dossiers et appels planifiés
         </footer>
       </body>
     </html>
