@@ -3,7 +3,7 @@ import { cache } from "react";
 import { cookies } from "next/headers";
 import { verifySessionValue } from "@/lib/session";
 
-export const SESSION_COOKIE = "carnet_session";
+export const SESSION_COOKIE = "recouvrement_session";
 
 export function readAuthSecret() {
   const secret = process.env.AUTH_SECRET;

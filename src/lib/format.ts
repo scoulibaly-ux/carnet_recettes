@@ -1,14 +1,17 @@
-export function formatDate(value: string) {
+export function formatDateTime(value: string | null) {
+  if (!value) return "—";
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "";
+  if (Number.isNaN(date.getTime())) return "—";
   return new Intl.DateTimeFormat("fr-FR", {
-    dateStyle: "long",
+    dateStyle: "medium",
+    timeStyle: "short",
     timeZone: "Europe/Paris",
   }).format(date);
 }
 
-export function previewText(value: string, max = 90) {
-  const compact = value.replace(/\s+/g, " ").trim();
-  if (compact.length <= max) return compact;
-  return `${compact.slice(0, max).trimEnd()}…`;
+export function formatEuros(cents: number) {
+  return new Intl.NumberFormat("fr-FR", {
+    style: "currency",
+    currency: "EUR",
+  }).format(cents / 100);
 }
