@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AppelStatusBadge } from "@/components/status-badge";
+import { AppelStatusBadge, appelCardTone } from "@/components/status-badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDateTime } from "@/lib/format";
 import { formatPhone } from "@/lib/phones";
@@ -22,7 +22,7 @@ export function CallList({
     <ul className="flex flex-col gap-3">
       {appels.map((appel) => (
         <li key={appel.id}>
-          <Card>
+          <Card className={appelCardTone[appel.status]}>
             <CardHeader>
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <CardTitle>

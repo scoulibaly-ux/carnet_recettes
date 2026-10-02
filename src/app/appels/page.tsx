@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CallList } from "@/components/call-list";
+import { AppelStatusBadge } from "@/components/status-badge";
 import { DatabaseNotice } from "@/components/database-notice";
 import { GuestHome } from "@/components/guest-home";
 import { StorageNotice, TelephonyNotice } from "@/components/storage-notice";
@@ -7,6 +8,7 @@ import { TriggerCallsForm } from "@/components/trigger-calls-form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { isAdmin } from "@/lib/auth";
 import { DatabaseUnavailableError, type DatabaseProblem } from "@/lib/db";
+import { APPEL_STATUSES } from "@/lib/labels";
 import { readRepository, type RepositoryKind } from "@/lib/repository";
 import type { Appel } from "@/lib/records";
 import { currentTelephony } from "@/lib/telephony-mode";
@@ -44,9 +46,13 @@ export default async function CallsPage() {
         <h1 className="font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
           Journal des appels
         </h1>
+        <div className="flex flex-wrap gap-2">
+          {APPEL_STATUSES.map((status) => (
+            <AppelStatusBadge key={status} status={status} />
+          ))}
+        </div>
         <p className="text-base text-muted-foreground">
-          Planifié, en cours, terminé, échec, ou simulation locale. Chaque ligne garde l&apos;heure
-          de début et de fin.
+          Chaque ligne garde l&apos;heure de début et de fin.
         </p>
       </div>
 

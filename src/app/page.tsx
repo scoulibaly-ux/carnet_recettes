@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { cn } from "cn";
 import { GuestHome } from "@/components/guest-home";
-import { DossierStatusBadge } from "@/components/status-badge";
+import { DossierStatusBadge, appelTextTone, dossierCardTone } from "@/components/status-badge";
 import { StorageNotice, TelephonyNotice } from "@/components/storage-notice";
 import { DatabaseNotice } from "@/components/database-notice";
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { isAdmin } from "@/lib/auth";
 import { DatabaseUnavailableError, type DatabaseProblem } from "@/lib/db";
 import { formatDateTime, formatEuros } from "@/lib/format";
-import { appelStatusLabel } from "@/lib/labels";
+import { appelStatusLabel, DOSSIER_STATUSES } from "@/lib/labels";
 import { formatPhone } from "@/lib/phones";
 import { readRepository, type RepositoryKind } from "@/lib/repository";
 import type { Appel, Dossier } from "@/lib/records";
@@ -50,6 +51,11 @@ export default async function HomePage() {
           <p className="text-base text-muted-foreground">
             Débiteurs, montants dus et prochaines relances téléphoniques.
           </p>
+          <div className="flex flex-wrap gap-2 pt-1">
+            {DOSSIER_STATUSES.map((status) => (
+              <DossierStatusBadge key={status} status={status} />
+            ))}
+          </div>
         </div>
         <Button asChild className="h-12 px-5 text-base">
           <Link href="/dossiers/nouveau">Nouveau dossier</Link>
@@ -63,26 +69,30 @@ export default async function HomePage() {
       {!problem ? (
         <ul className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <li>
-            <Card>
+            <Card className="bg-sky-50 ring-sky-300">
               <CardHeader>
-                <CardDescription>Dossiers ouverts</CardDescription>
-                <CardTitle className="text-2xl">{openCount}</CardTitle>
+                <CardDescription className="text-sky-800">Dossiers ouverts</CardDescription>
+                <CardTitle className="text-3xl text-sky-950">{openCount}</CardTitle>
               </CardHeader>
             </Card>
           </li>
           <li>
-            <Card>
+            <Card className="bg-amber-50 ring-amber-300">
               <CardHeader>
-                <CardDescription>Appels planifiés</CardDescription>
-                <CardTitle className="text-2xl">{planned.length}</CardTitle>
+                <CardDescription className="text-amber-800">Appels planifiés</CardDescription>
+                <CardTitle className="text-3xl text-amber-950">{planned.length}</CardTitle>
               </CardHeader>
             </Card>
           </li>
           <li>
-            <Card>
+            <Card className={due > 0 ? "bg-rose-50 ring-rose-300" : "bg-slate-50 ring-slate-300"}>
               <CardHeader>
-                <CardDescription>Dus maintenant</CardDescription>
-                <CardTitle className="text-2xl">{due}</CardTitle>
+                <CardDescription className={due > 0 ? "text-rose-800" : "text-slate-700"}>
+                  Dus maintenant
+                </CardDescription>
+                <CardTitle className={due > 0 ? "text-3xl text-rose-950" : "text-3xl text-slate-900"}>
+                  {due}
+                </CardTitle>
               </CardHeader>
             </Card>
           </li>
@@ -105,7 +115,7 @@ export default async function HomePage() {
             const latest = appels.find((appel) => appel.dossierId === dossier.id);
             return (
               <li key={dossier.id}>
-                <Card className="h-full">
+                <Card className={cn("h-full", dossierCardTone[dossier.status])}>
                   <CardHeader>
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <CardTitle className="text-lg">{dossier.debtorName}</CardTitle>
@@ -118,7 +128,7 @@ export default async function HomePage() {
                   <CardContent className="flex flex-col gap-1 text-sm">
                     <p>{formatEuros(dossier.amountCents)}</p>
                     <p className="text-muted-foreground">{formatPhone(dossier.phone)}</p>
-                    <p className="text-muted-foreground">
+                    <p className={latest && !next ? appelTextTone[latest.status] : "text-muted-foreground"}>
                       {next
                         ? `Prochain appel · ${formatDateTime(next.scheduledAt)}`
                         : latest
